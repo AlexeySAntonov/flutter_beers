@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         create: (context) => BeersCubit(
           repository: BeersRepository(
             apiProvider: BeersApiDataProvider(
-              Dio(),
+              client: Dio(),
             ),
           ),
         ),

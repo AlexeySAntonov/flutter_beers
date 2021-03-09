@@ -33,6 +33,7 @@ dependencies:
   dataclass: ^0.5.0
   equatable: ^2.0.0
   dio: ^3.0.0
+  cached_network_image: ^2.5.1
 
 dev_dependencies:
   flutter_test:
