@@ -51,11 +51,13 @@ class _HomeWidgetState extends State<HomeWidget> {
         contentPadding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
         leading: CachedNetworkImage(
           imageUrl: item.imageUrl,
-          placeholder: (context, url) => SizedBox(
-            width: 32.0,
-            height: 32.0,
-            child: CircularProgressIndicator(
-              strokeWidth: 2.0,
+          placeholder: (context, url) => Center(
+            child: SizedBox(
+              width: 32.0,
+              height: 32.0,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.0,
+              ),
             ),
           ),
           errorWidget: (context, url, error) => Icon(Icons.error),
