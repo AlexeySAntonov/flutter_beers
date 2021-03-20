@@ -41,33 +41,40 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   Widget _buildTextStub(String text) => Align(alignment: Alignment.center, child: Text(text));
 
-  Widget _buildList(List<BeerModel> data) =>
-      ListView.separated(
-        // padding: EdgeInsets.all(16.0),
-          itemBuilder: (context, i) => _buildRow(data[i]),
-          separatorBuilder: (context, index) =>
-              Divider(color: Colors.grey[400],
-                height: 1.0,
-                thickness: 0.2,
-                indent: 16.0,
-                endIndent: 16.0,),
-          itemCount: data.length);
+  Widget _buildList(List<BeerModel> data) => NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollInfo) {
+          if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+            CubitProvider.of<BeersCubit>(context).loadMore();
+            return true;
+          }
+          return false;
+        },
+        child: ListView.separated(
+            // padding: EdgeInsets.all(16.0),
+            itemBuilder: (context, i) => _buildRow(data[i]),
+            separatorBuilder: (context, index) => Divider(
+                  color: Colors.grey[400],
+                  height: 1.0,
+                  thickness: 0.2,
+                  indent: 16.0,
+                  endIndent: 16.0,
+                ),
+            itemCount: data.length),
+      );
 
-  Widget _buildRow(BeerModel item) =>
-      ListTile(
+  Widget _buildRow(BeerModel item) => ListTile(
         contentPadding: EdgeInsets.fromLTRB(12.0, 8.0, 16.0, 8.0),
         leading: CachedNetworkImage(
           imageUrl: item.imageUrl,
-          placeholder: (context, url) =>
-              Center(
-                child: SizedBox(
-                  width: 32.0,
-                  height: 32.0,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.0,
-                  ),
-                ),
+          placeholder: (context, url) => Center(
+            child: SizedBox(
+              width: 32.0,
+              height: 32.0,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.0,
               ),
+            ),
+          ),
           errorWidget: (context, url, error) => Icon(Icons.error),
           width: 64.0,
           height: 64.0,
@@ -105,6 +112,9 @@ class _HomeWidgetState extends State<HomeWidget> {
             ),
           ],
         ),
+        onTap: () {
+          // TODO: Goto details
+        },
       );
 
   void _toggleFavorite(int id) {

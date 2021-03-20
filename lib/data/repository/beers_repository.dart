@@ -6,7 +6,11 @@ class BeersRepository {
 
   BeersRepository({this.apiProvider});
 
-  Future<List<BeerModel>> data() async {
-    return apiProvider.data();
+  Future<List<BeerModel>> initialData() async {
+    return apiProvider.initialData();
+  }
+
+  Future<List<BeerModel>> loadMore({int offset}) async {
+    return apiProvider.loadMore(offset: offset);
   }
 }
