@@ -1,11 +1,6 @@
 import 'package:flutter_beers/data/model/beer_model.dart';
 import 'package:dio/dio.dart';
-
-final String _baseUrl = 'https://api.punkapi.com/v2/';
-final String _beersGet = 'beers?';
-final String _page = 'page';
-final String _limit = 'per_page';
-final int _defaultLimit = 20;
+import 'package:flutter_beers/data/provider/api/api_constants.dart';
 
 class BeersApiDataProvider {
   BeersApiDataProvider({required this.client});
@@ -14,7 +9,7 @@ class BeersApiDataProvider {
 
   Future<List<BeerModel>> initialData() async {
     try {
-      final url = "$_baseUrl$_beersGet$_page=1&$_limit=$_defaultLimit";
+      final url = "$BASE_URL$BEERS_GET$PAGE=1&$LIMIT=$DEFAULT_LIMIT";
       final response = await client.get(url);
       final beers = List<BeerModel>.of(
         response.data.map<BeerModel>((json) => BeerModel(
@@ -32,8 +27,8 @@ class BeersApiDataProvider {
 
   Future<List<BeerModel>> loadMore({required int offset}) async {
     try {
-      final int nextPage = offset ~/ _defaultLimit + 1;
-      final url = "$_baseUrl$_beersGet$_page=$nextPage&$_limit=$_defaultLimit";
+      final int nextPage = offset ~/ DEFAULT_LIMIT + 1;
+      final url = "$BASE_URL$BEERS_GET$PAGE=$nextPage&$LIMIT=$DEFAULT_LIMIT";
       final response = await client.get(url);
       final beers = List<BeerModel>.of(
         response.data.map<BeerModel>((json) => BeerModel(
