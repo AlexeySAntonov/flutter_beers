@@ -1,10 +1,10 @@
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_beers/ui/beer_item.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:flutter_beers/business/beers_cubit.dart';
 import 'package:flutter_beers/business/beers_state.dart';
-import 'package:flutter_beers/data/model/beer_model.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -41,10 +41,10 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   Widget _buildTextStub(String text) => Align(alignment: Alignment.center, child: Text(text));
 
-  Widget _buildList(List<BeerModel> data) => NotificationListener<ScrollNotification>(
+  Widget _buildList(List<BeerItem> data) => NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
-            CubitProvider.of<BeersCubit>(context).loadMore();
+            CubitProvider.of<BeersCubit>(context).loadMore(); // The same is context.cubit<BeersCubit>().loadMore();
             return true;
           }
           return false;
@@ -62,7 +62,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             itemCount: data.length),
       );
 
-  Widget _buildRow(BeerModel item) => ListTile(
+  Widget _buildRow(BeerItem item) => ListTile(
         contentPadding: EdgeInsets.fromLTRB(12.0, 8.0, 16.0, 8.0),
         leading: CachedNetworkImage(
           imageUrl: item.imageUrl,
@@ -101,8 +101,8 @@ class _HomeWidgetState extends State<HomeWidget> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             IconButton(
-              icon: Icon(Icons.favorite),
-              color: Colors.red[400],
+              icon: Icon(Icons.favorite_border),
+              color: Colors.grey[500],
               constraints: BoxConstraints(maxWidth: 24.0, maxHeight: 24.0),
               padding: EdgeInsets.all(0.0),
               splashRadius: 24.0,

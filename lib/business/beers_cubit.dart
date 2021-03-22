@@ -1,11 +1,12 @@
 import 'package:cubit/cubit.dart';
 import 'package:flutter_beers/business/beers_state.dart';
-import 'package:flutter_beers/data/model/beer_model.dart';
+import 'package:flutter_beers/business/mapper.dart';
+import 'package:flutter_beers/ui/beer_item.dart';
 import 'beers_state.dart';
 import 'package:flutter_beers/data/repository/beers_repository.dart';
 
 class BeersCubit extends Cubit<BeersState> {
-  BeersCubit({this.repository}) : super(Initial()) {
+  BeersCubit({required this.repository}) : super(Initial()) {
     fetchBeers();
   }
 
@@ -15,7 +16,7 @@ class BeersCubit extends Cubit<BeersState> {
     try {
       emit(Loading());
       final items = await repository.initialData();
-      emit(Data(items));
+      emit(Data(items.map((model) => model.item()).toList()));
     } on Exception {
       emit(Error());
     }
@@ -25,13 +26,13 @@ class BeersCubit extends Cubit<BeersState> {
     try {
       final currentBeers = _currentBeers();
       final newBeers = await repository.loadMore(offset: currentBeers.length);
-      emit(Data(List.from(currentBeers)..addAll(newBeers)));
+      emit(Data(List.from(currentBeers)..addAll(newBeers.map((model) => model.item()))));
     } on Exception {
       emit(Error());
     }
   }
 
-  List<BeerModel> _currentBeers() {
+  List<BeerItem> _currentBeers() {
     if (state is Data) {
       return (state as Data).beers;
     } else {

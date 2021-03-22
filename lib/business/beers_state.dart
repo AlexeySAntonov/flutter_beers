@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_beers/data/model/beer_model.dart';
+import 'package:flutter_beers/ui/beer_item.dart';
 
 abstract class BeersState extends Equatable {}
 
 class Data extends BeersState {
   Data(this.beers);
 
-  final List<BeerModel> beers;
+  final List<BeerItem> beers;
 
   @override
   List<Object> get props => [beers];

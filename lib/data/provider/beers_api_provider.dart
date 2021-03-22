@@ -8,7 +8,7 @@ final String _limit = 'per_page';
 final int _defaultLimit = 20;
 
 class BeersApiDataProvider {
-  BeersApiDataProvider({this.client});
+  BeersApiDataProvider({required this.client});
 
   final Dio client;
 
@@ -30,7 +30,7 @@ class BeersApiDataProvider {
     }
   }
 
-  Future<List<BeerModel>> loadMore({int offset}) async {
+  Future<List<BeerModel>> loadMore({required int offset}) async {
     try {
       final int nextPage = offset ~/ _defaultLimit + 1;
       final url = "$_baseUrl$_beersGet$_page=$nextPage&$_limit=$_defaultLimit";
