@@ -3,6 +3,7 @@ import 'package:flutter_beers/ui/base/divider/divider_widget.dart';
 import 'package:flutter_beers/ui/base/list_item.dart';
 import 'package:flutter_beers/ui/base/pagination_loading/pagination_loading_item.dart';
 import 'package:flutter_beers/ui/base/pagination_loading/pagination_loading_widget.dart';
+import 'package:flutter_beers/ui/base/stub/text_stub_widget.dart';
 import 'package:flutter_beers/ui/beer_list/beer_item.dart';
 import 'package:flutter_beers/ui/beer_list/beer_widget.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
@@ -27,7 +28,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           case Loading:
             return Center(child: CircularProgressIndicator());
           case Error:
-            return _buildTextStub('Error occurred...');
+            return TextStubWidget(stubText: "Error occurred...");
           case Data:
             return _buildList((state as Data).items);
           default:
@@ -36,8 +37,6 @@ class _HomeWidgetState extends State<HomeWidget> {
       }),
     );
   }
-
-  Widget _buildTextStub(String text) => Align(alignment: Alignment.center, child: Text(text));
 
   Widget _buildList(List<ListItem> data) => NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
@@ -50,7 +49,8 @@ class _HomeWidgetState extends State<HomeWidget> {
         child: ListView.separated(
             itemBuilder: (context, i) => _buildRow(data[i]),
             separatorBuilder: (context, index) => DividerWidget(),
-            itemCount: data.length),
+            itemCount: data.length
+        ),
       );
 
   Widget _buildRow(ListItem item) {
