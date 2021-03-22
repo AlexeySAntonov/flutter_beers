@@ -1,11 +1,11 @@
 import 'package:cubit/cubit.dart';
-import 'package:flutter_beers/business/beers_state.dart';
+import 'package:flutter_beers/business/list_state.dart';
 import 'package:flutter_beers/business/mapper.dart';
-import 'package:flutter_beers/ui/beer_item.dart';
-import 'beers_state.dart';
+import 'package:flutter_beers/ui/base/list_item.dart';
+import 'list_state.dart';
 import 'package:flutter_beers/data/repository/beers_repository.dart';
 
-class BeersCubit extends Cubit<BeersState> {
+class BeersCubit extends Cubit<ListState> {
   BeersCubit({required this.repository}) : super(Initial()) {
     fetchBeers();
   }
@@ -32,11 +32,13 @@ class BeersCubit extends Cubit<BeersState> {
     }
   }
 
-  List<BeerItem> _currentBeers() {
-    if (state is Data) {
-      return (state as Data).beers;
-    } else {
-      return List.empty();
-    }
-  }
+  List<ListItem> _currentBeers() => (state is Data) ? (state as Data).items : List.empty();
+
+  // List<ListItem> _currentBeers() {
+  //   if (state is Data) {
+  //     return (state as Data).items;
+  //   } else {
+  //     return List.empty();
+  //   }
+  // }
 }

@@ -1,10 +1,12 @@
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_beers/ui/base/list_item.dart';
+import 'package:flutter_beers/ui/base/pagination_loading/pagination_loading_item.dart';
 import 'package:flutter_beers/ui/beer_item.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:flutter_beers/business/beers_cubit.dart';
-import 'package:flutter_beers/business/beers_state.dart';
+import 'package:flutter_beers/business/list_state.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -22,7 +24,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         title: Text("Beers 😍"),
         actions: [IconButton(icon: Icon(Icons.list), onPressed: _pushFavorites)],
       ),
-      body: CubitBuilder<BeersCubit, BeersState>(builder: (context, state) {
+      body: CubitBuilder<BeersCubit, ListState>(builder: (context, state) {
         if (state is Loading) {
           return Center(
             child: CircularProgressIndicator(),
@@ -32,7 +34,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           return _buildTextStub('Error occurred...');
         }
         if (state is Data) {
-          return _buildList(state.beers);
+          return _buildList(state.items);
         }
         return Container();
       }),
@@ -41,7 +43,7 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   Widget _buildTextStub(String text) => Align(alignment: Alignment.center, child: Text(text));
 
-  Widget _buildList(List<BeerItem> data) => NotificationListener<ScrollNotification>(
+  Widget _buildList(List<ListItem> data) => NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
             CubitProvider.of<BeersCubit>(context).loadMore(); // The same is context.cubit<BeersCubit>().loadMore();
@@ -62,60 +64,70 @@ class _HomeWidgetState extends State<HomeWidget> {
             itemCount: data.length),
       );
 
-  Widget _buildRow(BeerItem item) => ListTile(
-        contentPadding: EdgeInsets.fromLTRB(12.0, 8.0, 16.0, 8.0),
-        leading: CachedNetworkImage(
-          imageUrl: item.imageUrl,
-          placeholder: (context, url) => Center(
-            child: SizedBox(
-              width: 32.0,
-              height: 32.0,
-              child: CircularProgressIndicator(
-                strokeWidth: 2.0,
+  Widget _buildRow(ListItem item) {
+    switch (item.runtimeType) {
+      case BeerItem:
+        item as BeerItem;
+        return ListTile(
+          contentPadding: EdgeInsets.fromLTRB(12.0, 8.0, 16.0, 8.0),
+          leading: CachedNetworkImage(
+            imageUrl: item.imageUrl,
+            placeholder: (context, url) => Center(
+              child: SizedBox(
+                width: 32.0,
+                height: 32.0,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.0,
+                ),
               ),
             ),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+            width: 64.0,
+            height: 64.0,
+            fit: BoxFit.contain,
           ),
-          errorWidget: (context, url, error) => Icon(Icons.error),
-          width: 64.0,
-          height: 64.0,
-          fit: BoxFit.contain,
-        ),
-        title: Text(
-          item.name,
-          style: _titleFont,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-        ),
-        subtitle: Padding(
-          padding: EdgeInsets.only(top: 4.0),
-          child: Text(
-            item.description,
-            style: _subtitleFont,
+          title: Text(
+            item.name,
+            style: _titleFont,
             overflow: TextOverflow.ellipsis,
-            maxLines: 2,
+            maxLines: 1,
           ),
-        ),
-        trailing: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            IconButton(
-              icon: Icon(Icons.favorite_border),
-              color: Colors.grey[500],
-              constraints: BoxConstraints(maxWidth: 24.0, maxHeight: 24.0),
-              padding: EdgeInsets.all(0.0),
-              splashRadius: 24.0,
-              onPressed: () {
-                _toggleFavorite(item.id);
-              },
+          subtitle: Padding(
+            padding: EdgeInsets.only(top: 4.0),
+            child: Text(
+              item.description,
+              style: _subtitleFont,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
             ),
-          ],
-        ),
-        onTap: () {
-          // TODO: Goto details
-        },
-      );
+          ),
+          trailing: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: Icon(Icons.favorite_border),
+                color: Colors.grey[500],
+                constraints: BoxConstraints(maxWidth: 24.0, maxHeight: 24.0),
+                padding: EdgeInsets.all(0.0),
+                splashRadius: 24.0,
+                onPressed: () {
+                  _toggleFavorite(item.id);
+                },
+              ),
+            ],
+          ),
+          onTap: () {
+            // TODO: Goto details
+          },
+        );
+      case PaginationLoadingItem:
+        return Container();
+      default:
+        return Container();
+    }
+  }
 
   void _toggleFavorite(int id) {
     // Under dev
