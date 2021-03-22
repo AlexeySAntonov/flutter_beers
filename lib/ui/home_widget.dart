@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_beers/ui/base/divider/divider_widget.dart';
 import 'package:flutter_beers/ui/base/list_item.dart';
 import 'package:flutter_beers/ui/base/pagination_loading/pagination_loading_item.dart';
 import 'package:flutter_beers/ui/base/pagination_loading/pagination_loading_widget.dart';
@@ -30,7 +31,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           case Data:
             return _buildList((state as Data).items);
           default:
-            return Container();
+            throw Exception("Unsupported state: $state");
         }
       }),
     );
@@ -47,15 +48,8 @@ class _HomeWidgetState extends State<HomeWidget> {
           return false;
         },
         child: ListView.separated(
-            // padding: EdgeInsets.all(16.0),
             itemBuilder: (context, i) => _buildRow(data[i]),
-            separatorBuilder: (context, index) => Divider(
-                  color: Colors.grey[400],
-                  height: 1.0,
-                  thickness: 0.2,
-                  indent: 16.0,
-                  endIndent: 16.0,
-                ),
+            separatorBuilder: (context, index) => DividerWidget(),
             itemCount: data.length),
       );
 
@@ -66,7 +60,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       case PaginationLoadingItem:
         return PaginationLoadingWidget();
       default:
-        return Container();
+        throw Exception("Unsupported item type: $item");
     }
   }
 
