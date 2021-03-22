@@ -34,11 +34,4 @@ class BeersCubit extends Cubit<ListState> {
 
   List<ListItem> _currentBeers() => (state is Data) ? (state as Data).items : List.empty();
 
-  // List<ListItem> _currentBeers() {
-  //   if (state is Data) {
-  //     return (state as Data).items;
-  //   } else {
-  //     return List.empty();
-  //   }
-  // }
 }

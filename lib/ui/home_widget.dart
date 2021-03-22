@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_beers/ui/base/list_item.dart';
 import 'package:flutter_beers/ui/base/pagination_loading/pagination_loading_item.dart';
+import 'package:flutter_beers/ui/base/pagination_loading/pagination_loading_widget.dart';
 import 'package:flutter_beers/ui/beer_list/beer_item.dart';
 import 'package:flutter_beers/ui/beer_list/beer_widget.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
@@ -13,27 +14,24 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Beers 😍"),
+        title: Text("Flutter Beers 😍"),
         actions: [IconButton(icon: Icon(Icons.list), onPressed: _pushFavorites)],
       ),
       body: CubitBuilder<BeersCubit, ListState>(builder: (context, state) {
-        if (state is Loading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+        switch (state.runtimeType) {
+          case Loading:
+            return Center(child: CircularProgressIndicator());
+          case Error:
+            return _buildTextStub('Error occurred...');
+          case Data:
+            return _buildList((state as Data).items);
+          default:
+            return Container();
         }
-        if (state is Error) {
-          return _buildTextStub('Error occurred...');
-        }
-        if (state is Data) {
-          return _buildList(state.items);
-        }
-        return Container();
       }),
     );
   }
@@ -66,7 +64,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       case BeerItem:
         return BeerWidget(item: (item as BeerItem));
       case PaginationLoadingItem:
-        return Container();
+        return PaginationLoadingWidget();
       default:
         return Container();
     }
