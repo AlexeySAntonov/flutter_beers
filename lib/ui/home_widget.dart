@@ -47,9 +47,12 @@ class _HomeWidgetState extends State<HomeWidget> {
           return false;
         },
         child: ListView.separated(
-            itemBuilder: (context, i) => _buildRow(data[i]),
-            separatorBuilder: (context, index) => DividerWidget(),
-            itemCount: data.length
+          itemBuilder: (context, i) => _buildRow(data[i]),
+          separatorBuilder: (context, index) => DividerWidget(),
+          itemCount: data.length,
+          // Possible ListView performance improvement
+          // https://github.com/flutter/flutter/issues/22314
+          physics: const AlwaysScrollableScrollPhysics(),
         ),
       );
 
