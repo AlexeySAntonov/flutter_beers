@@ -4,6 +4,7 @@ class BeerModel {
   final String name;
   final String description;
   final String? imageUrl;
+  final bool favorite;
 
-  BeerModel({required this.id, required this.name, required this.description, required this.imageUrl});
+  BeerModel({required this.id, required this.name, required this.description, required this.imageUrl, required this.favorite});
 }

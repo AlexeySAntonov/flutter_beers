@@ -16,7 +16,8 @@ class BeersApiDataProvider {
               id: json['id'],
               name: json['name'],
               description: json['description'],
-              imageUrl: json['image_url']
+              imageUrl: json['image_url'],
+              favorite: false,
             )),
       );
       return beers;
@@ -32,11 +33,12 @@ class BeersApiDataProvider {
       final response = await client.get(url);
       final beers = List<BeerModel>.of(
         response.data.map<BeerModel>((json) => BeerModel(
-            id: json['id'],
-            name: json['name'],
-            description: json['description'],
-            imageUrl: json['image_url']
-        )),
+              id: json['id'],
+              name: json['name'],
+              description: json['description'],
+              imageUrl: json['image_url'],
+              favorite: false,
+            )),
       );
       return beers;
     } catch (e) {
