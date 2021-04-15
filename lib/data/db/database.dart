@@ -22,9 +22,6 @@ LazyDatabase _openConnection() {
 
 @UseMoor(
   tables: [Beers],
-  queries: {
-    'getBeersByIds': 'SELECT * FROM beers WHERE id in (:ids)',
-  },
 )
 class BeersDatabase extends _$BeersDatabase {
   // we tell the database where to store the data with this constructor
@@ -34,14 +31,19 @@ class BeersDatabase extends _$BeersDatabase {
   int get schemaVersion => 1;
 
   Future<void> insertBeers(List<BeerModel> models) async {
-    // final existentBeers = await getBeersByIds(models.map((model) => model.id).toSet());
+    // keep the favorites attribute
+    final List<BeerEntity?> existent = await getBeers();
+    await batch((batch) {
+      batch.insertAll(
+        beers,
+        models.map((model) => model.entity(favorite: existent.firstWhere((entity) => entity?.id == model.id, orElse: () => null)?.favorite)).toList(),
+        mode: InsertMode.insertOrReplace
+      );
+    });
   }
 
-  Future<List<BeerEntity>> getBeersByIds(Set<int> ids) {
-    // return (select(beers)..where((beer) => ids.contains(beer.id))).get();
-    return customSelect('SELECT * FROM beers WHERE id in (:$ids)', readsFrom: beers).map((rows) {
-      
-    });
+  Future<List<BeerEntity>> getBeers() {
+    return (select(beers)).get();
   }
 
   // watches beers with limit and offset, emit new items whenever the underlying data changes.

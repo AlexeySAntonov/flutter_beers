@@ -137,13 +137,12 @@ class BeersCompanion extends UpdateCompanion<BeerEntity> {
     this.favorite = const Value.absent(),
   });
   BeersCompanion.insert({
-    required int id,
+    this.id = const Value.absent(),
     required String name,
     required String description,
     required String imageUrl,
     this.favorite = const Value.absent(),
-  })  : id = Value(id),
-        name = Value(name),
+  })  : name = Value(name),
         description = Value(description),
         imageUrl = Value(imageUrl);
   static Insertable<BeerEntity> custom({
@@ -284,8 +283,6 @@ class $BeersTable extends Beers with TableInfo<$BeersTable, BeerEntity> {
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -315,7 +312,7 @@ class $BeersTable extends Beers with TableInfo<$BeersTable, BeerEntity> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   BeerEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -331,12 +328,6 @@ class $BeersTable extends Beers with TableInfo<$BeersTable, BeerEntity> {
 abstract class _$BeersDatabase extends GeneratedDatabase {
   _$BeersDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $BeersTable beers = $BeersTable(this);
-  Selectable<BeerEntity> getBeersByIds(int ids) {
-    return customSelect('SELECT * FROM beers WHERE id in (:ids)',
-        variables: [Variable<int>(ids)],
-        readsFrom: {beers}).map(beers.mapFromRow);
-  }
-
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

@@ -2,6 +2,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beers/business/beers_cubit.dart';
+import 'package:flutter_beers/data/db/database.dart';
+import 'package:flutter_beers/data/provider/db/beers_db_provider.dart';
 import 'package:flutter_beers/data/repository/beers_repository.dart';
 import 'package:flutter_beers/data/provider/api/beers_api_provider.dart';
 import 'package:flutter_beers/ui/home_widget.dart';
@@ -20,6 +22,9 @@ class MyApp extends StatelessWidget {
           repository: BeersRepository(
             apiProvider: BeersApiDataProvider(
               client: Dio(),
+            ),
+            dbProvider: BeersDbDataProvider(
+              db: BeersDatabase(),
             ),
           ),
         ),

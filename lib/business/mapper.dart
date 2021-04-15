@@ -13,12 +13,12 @@ extension BeerModelExtension on BeerModel {
         imageUrl: (this.imageUrl == null) ? _beerPlaceholderUrl : this.imageUrl!,
       );
 
-  BeerEntity entity() => BeerEntity(
+  BeerEntity entity({required bool? favorite}) => BeerEntity(
         id: this.id,
         name: this.name,
         description: this.description,
         imageUrl: (this.imageUrl == null) ? _beerPlaceholderUrl : this.imageUrl!,
-        favorite: this.favorite,
+        favorite: (favorite == null) ? false : favorite,
       );
 }
 
