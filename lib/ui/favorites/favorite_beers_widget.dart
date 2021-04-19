@@ -8,7 +8,6 @@ import 'package:flutter_beers/ui/base/stub/text_stub_widget.dart';
 import 'package:flutter_beers/ui/beer_list/beer_item.dart';
 import 'package:flutter_beers/ui/favorites/favorite_beer_widget.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
-import 'package:flutter_beers/business/cubit_beers.dart';
 import 'package:flutter_beers/business/list_state.dart';
 
 class FavoriteBeersWidget extends StatefulWidget {
@@ -38,22 +37,13 @@ class _FavoriteBeersWidgetState extends State<FavoriteBeersWidget> {
     );
   }
 
-  Widget _buildList(List<ListItem> data) => NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scrollInfo) {
-          if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
-            CubitProvider.of<BeersCubit>(context).loadMore(); // The same is context.cubit<BeersCubit>().loadMore();
-            return true;
-          }
-          return false;
-        },
-        child: ListView.separated(
-          itemBuilder: (context, i) => _buildRow(data[i]),
-          separatorBuilder: (context, index) => DividerWidget(),
-          itemCount: data.length,
-          // Possible ListView performance improvement
-          // https://github.com/flutter/flutter/issues/22314
-          physics: const AlwaysScrollableScrollPhysics(),
-        ),
+  Widget _buildList(List<ListItem> data) => ListView.separated(
+        itemBuilder: (context, i) => _buildRow(data[i]),
+        separatorBuilder: (context, index) => DividerWidget(),
+        itemCount: data.length,
+        // Possible ListView performance improvement
+        // https://github.com/flutter/flutter/issues/22314
+        physics: const AlwaysScrollableScrollPhysics(),
       );
 
   Widget _buildRow(ListItem item) {
@@ -66,5 +56,4 @@ class _FavoriteBeersWidgetState extends State<FavoriteBeersWidget> {
         throw Exception("Unsupported item type: $item");
     }
   }
-
 }
