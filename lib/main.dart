@@ -1,7 +1,7 @@
 // @dart=2.9
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_beers/business/beers_cubit.dart';
+import 'package:flutter_beers/business/cubit_beers.dart';
 import 'package:flutter_beers/data/db/database.dart';
 import 'package:flutter_beers/data/provider/db/beers_db_provider.dart';
 import 'package:flutter_beers/data/repository/beers_repository.dart';

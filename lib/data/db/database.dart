@@ -53,8 +53,8 @@ class BeersDatabase extends _$BeersDatabase {
   }
 
   // watches all favorite beers, emit new items whenever the underlying data changes.
-  Stream<List<BeerEntity>> watchFavoriteBeers() {
-    return (select(beers)..where((beer) => beer.favorite)).watch();
+  Stream<List<BeerModel>> watchFavoriteBeers() {
+    return (select(beers)..where((beer) => beer.favorite)).map((entity) => entity.model()).watch();
   }
 
   Future<void> toggleFavorite(int id) {

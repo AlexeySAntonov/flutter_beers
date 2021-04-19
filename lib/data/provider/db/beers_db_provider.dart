@@ -10,6 +10,10 @@ class BeersDbDataProvider {
     return db.watchBeers(limit, offset);
   }
 
+  Stream<List<BeerModel>> favoriteBeersStream() {
+    return db.watchFavoriteBeers();
+  }
+
   Future<void> insertBeers(List<BeerModel> models) {
     return db.insertBeers(models);
   }

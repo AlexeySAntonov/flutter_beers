@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_beers/business/cubit_beers.dart';
+import 'package:flutter_beers/business/cubit_favorites.dart';
 import 'package:flutter_beers/ui/beer_list/beer_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
-class BeerWidget extends StatelessWidget {
-  BeerWidget({required this.item});
+class FavoriteBeerWidget extends StatelessWidget {
+  FavoriteBeerWidget({required this.item});
 
   final BeerItem item;
 
@@ -59,7 +59,7 @@ class BeerWidget extends StatelessWidget {
               padding: EdgeInsets.all(0.0),
               splashRadius: 24.0,
               onPressed: () {
-                context.cubit<BeersCubit>().setFavorite(id: item.id, favorite: !item.favorite);
+                context.cubit<FavoritesCubit>().setFavorite(id: item.id, favorite: !item.favorite);
               },
             ),
           ],
