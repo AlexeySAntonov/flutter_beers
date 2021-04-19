@@ -11,6 +11,7 @@ extension BeerModelExtension on BeerModel {
         name: this.name,
         description: this.description,
         imageUrl: (this.imageUrl == null) ? _beerPlaceholderUrl : this.imageUrl!,
+        favorite: this.favorite,
       );
 
   BeerEntity entity({required bool? favorite}) => BeerEntity(

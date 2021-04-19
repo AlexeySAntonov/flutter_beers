@@ -35,10 +35,11 @@ class BeersDatabase extends _$BeersDatabase {
     final List<BeerEntity?> existent = await getBeers();
     await batch((batch) {
       batch.insertAll(
-        beers,
-        models.map((model) => model.entity(favorite: existent.firstWhere((entity) => entity?.id == model.id, orElse: () => null)?.favorite)).toList(),
-        mode: InsertMode.insertOrReplace
-      );
+          beers,
+          models
+              .map((model) => model.entity(favorite: existent.firstWhere((entity) => entity?.id == model.id, orElse: () => null)?.favorite))
+              .toList(),
+          mode: InsertMode.insertOrReplace);
     });
   }
 
@@ -54,5 +55,13 @@ class BeersDatabase extends _$BeersDatabase {
   // watches all favorite beers, emit new items whenever the underlying data changes.
   Stream<List<BeerEntity>> watchFavoriteBeers() {
     return (select(beers)..where((beer) => beer.favorite)).watch();
+  }
+
+  Future<void> toggleFavorite(int id) {
+    return update(beers).write(BeersCompanion(id: Value(id), favorite: Value(true)));
+  }
+
+  Future<void> setFavorite({required int id, required bool favorite}) {
+    return (update(beers)..where((t) => t.id.equals(id))).write(BeersCompanion(favorite: Value(favorite)));
   }
 }

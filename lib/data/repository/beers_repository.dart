@@ -19,4 +19,8 @@ class BeersRepository {
   Future<void> loadMore({required int offset}) async {
     return dbProvider.insertBeers(await apiProvider.loadMore(offset: offset));
   }
+
+  Future<void> setFavorite({required int id, required bool favorite}) {
+    return dbProvider.setFavorite(id: id, favorite: favorite);
+  }
 }

@@ -14,4 +14,8 @@ class BeersDbDataProvider {
     return db.insertBeers(models);
   }
 
+  Future<void> setFavorite({required int id, required bool favorite}) {
+    return db.setFavorite(id: id, favorite: favorite);
+  }
+
 }

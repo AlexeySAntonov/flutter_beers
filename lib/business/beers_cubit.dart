@@ -45,5 +45,9 @@ class BeersCubit extends Cubit<ListState> {
     }
   }
 
+  void setFavorite({required int id, required bool favorite}) async {
+    repository.setFavorite(id: id, favorite: favorite);
+  }
+
   List<ListItem> _currentBeers() => (state is Data) ? (state as Data).items : List.empty();
 }
