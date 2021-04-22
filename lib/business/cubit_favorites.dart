@@ -1,13 +1,13 @@
 import 'package:cubit/cubit.dart';
 import 'package:flutter_beers/business/list_state.dart';
 import 'package:flutter_beers/business/mapper.dart';
-import 'package:flutter_beers/data/repository/favorites_repository.dart';
+import 'package:flutter_beers/data/repository/favorites/ifavorites_repository.dart';
 import 'list_state.dart';
 
 class FavoritesCubit extends Cubit<ListState> {
-  final FavoritesRepository _repository;
+  final IFavoritesRepository _repository;
 
-  FavoritesCubit({required FavoritesRepository repository}) : _repository = repository, super(Initial()) {
+  FavoritesCubit({required IFavoritesRepository repository}) : _repository = repository, super(Initial()) {
     favoritesData();
   }
 

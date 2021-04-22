@@ -1,12 +1,14 @@
 import 'package:flutter_beers/data/model/beer_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_beers/data/provider/api/api_constants.dart';
+import 'package:flutter_beers/data/provider/api/ibeers_api_provider.dart';
 
-class BeersApiDataProvider {
+class BeersApiDataProvider extends IBeersApiDataProvider {
   final Dio _client;
 
   BeersApiDataProvider({required Dio client}) : _client = client;
 
+  @override
   Future<List<BeerModel>> initialData() async {
     try {
       final url = "$BASE_URL$BEERS_GET$PAGE=1&$LIMIT=$DEFAULT_LIMIT";
@@ -26,6 +28,7 @@ class BeersApiDataProvider {
     }
   }
 
+  @override
   Future<List<BeerModel>> loadMore({required int offset}) async {
     try {
       final int nextPage = offset ~/ DEFAULT_LIMIT + 1;

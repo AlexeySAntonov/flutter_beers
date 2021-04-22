@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_beers/business/cubit_favorites.dart';
-import 'package:flutter_beers/data/repository/favorites_repository.dart';
+import 'package:flutter_beers/data/repository/favorites/favorites_repository.dart';
 import 'package:flutter_beers/data/db/database.dart';
 import 'package:flutter_beers/data/provider/db/beers_db_provider.dart';
 import 'package:flutter_beers/ui/base/divider/divider_widget.dart';

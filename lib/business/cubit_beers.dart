@@ -5,16 +5,16 @@ import 'package:flutter_beers/business/list_state.dart';
 import 'package:flutter_beers/business/mapper.dart';
 import 'package:flutter_beers/data/provider/api/api_constants.dart';
 import 'package:flutter_beers/data/model/beer_model.dart';
+import 'package:flutter_beers/data/repository/beer_list/ibeers_repository.dart';
 import 'package:flutter_beers/ui/base/list_item.dart';
 import 'package:flutter_beers/ui/base/pagination_loading/pagination_loading_item.dart';
 import 'package:flutter_beers/ui/beer_list/beer_item.dart';
 import 'list_state.dart';
-import 'package:flutter_beers/data/repository/beers_repository.dart';
 
 class BeersCubit extends Cubit<ListState> {
-  final BeersRepository _repository;
+  final IBeersRepository _repository;
 
-  BeersCubit({required BeersRepository repository}) : _repository = repository, super(Initial()) {
+  BeersCubit({required IBeersRepository repository}) : _repository = repository, super(Initial()) {
     initialData();
   }
 

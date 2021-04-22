@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_beers/business/cubit_beers.dart';
 import 'package:flutter_beers/data/db/database.dart';
 import 'package:flutter_beers/data/provider/db/beers_db_provider.dart';
-import 'package:flutter_beers/data/repository/beers_repository.dart';
+import 'package:flutter_beers/data/repository/beer_list/beers_repository.dart';
 import 'package:flutter_beers/data/provider/api/beers_api_provider.dart';
 import 'package:flutter_beers/ui/home_widget.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
