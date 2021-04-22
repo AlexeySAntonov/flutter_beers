@@ -2,15 +2,15 @@ import 'package:flutter_beers/data/provider/db/beers_db_provider.dart';
 import 'package:flutter_beers/data/model/beer_model.dart';
 
 class FavoritesRepository {
-  final BeersDbDataProvider dbProvider;
+  final BeersDbDataProvider _dbProvider;
 
-  FavoritesRepository({required this.dbProvider});
+  FavoritesRepository({required BeersDbDataProvider dbProvider}) : _dbProvider = dbProvider;
 
   Stream<List<BeerModel>> favoritesBeersStream() {
-    return dbProvider.favoriteBeersStream();
+    return _dbProvider.favoriteBeersStream();
   }
 
   Future<void> setFavorite({required int id, required bool favorite}) {
-    return dbProvider.setFavorite(id: id, favorite: favorite);
+    return _dbProvider.setFavorite(id: id, favorite: favorite);
   }
 }

@@ -12,19 +12,19 @@ import 'list_state.dart';
 import 'package:flutter_beers/data/repository/beers_repository.dart';
 
 class BeersCubit extends Cubit<ListState> {
-  BeersCubit({required this.repository}) : super(Initial()) {
+  final BeersRepository _repository;
+
+  BeersCubit({required BeersRepository repository}) : _repository = repository, super(Initial()) {
     initialData();
   }
-
-  final BeersRepository repository;
 
   StreamSubscription<List<BeerModel>>? beersStreamSubscription;
 
   void initialData() async {
     try {
       emit(Loading());
-      await repository.initialData();
-      beersStreamSubscription = repository.beersStream(limit: DEFAULT_LIMIT, offset: 0).listen((models) {
+      await _repository.initialData();
+      beersStreamSubscription = _repository.beersStream(limit: DEFAULT_LIMIT, offset: 0).listen((models) {
         emit(Data(models.map((model) => model.item()).toList()..add(PaginationLoadingItem())));
       });
     } on Exception {
@@ -35,9 +35,9 @@ class BeersCubit extends Cubit<ListState> {
   void loadMore() async {
     try {
       final currentBeers = _currentBeers().where((element) => element is BeerItem); // TODO: The non-optimal solution, need to improve
-      await repository.loadMore(offset: currentBeers.length);
+      await _repository.loadMore(offset: currentBeers.length);
       beersStreamSubscription?.cancel();
-      beersStreamSubscription = repository.beersStream(limit: DEFAULT_LIMIT + currentBeers.length, offset: 0).listen((models) {
+      beersStreamSubscription = _repository.beersStream(limit: DEFAULT_LIMIT + currentBeers.length, offset: 0).listen((models) {
         emit(Data(models.map((model) => model.item()).toList()..add(PaginationLoadingItem())));
       });
     } on Exception {
@@ -46,7 +46,7 @@ class BeersCubit extends Cubit<ListState> {
   }
 
   void setFavorite({required int id, required bool favorite}) async {
-    repository.setFavorite(id: id, favorite: favorite);
+    _repository.setFavorite(id: id, favorite: favorite);
   }
 
   List<ListItem> _currentBeers() => (state is Data) ? (state as Data).items : List.empty();

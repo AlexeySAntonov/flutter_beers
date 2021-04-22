@@ -3,14 +3,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter_beers/data/provider/api/api_constants.dart';
 
 class BeersApiDataProvider {
-  BeersApiDataProvider({required this.client});
+  final Dio _client;
 
-  final Dio client;
+  BeersApiDataProvider({required Dio client}) : _client = client;
 
   Future<List<BeerModel>> initialData() async {
     try {
       final url = "$BASE_URL$BEERS_GET$PAGE=1&$LIMIT=$DEFAULT_LIMIT";
-      final response = await client.get(url);
+      final response = await _client.get(url);
       final beers = List<BeerModel>.of(
         response.data.map<BeerModel>((json) => BeerModel(
               id: json['id'],
@@ -30,7 +30,7 @@ class BeersApiDataProvider {
     try {
       final int nextPage = offset ~/ DEFAULT_LIMIT + 1;
       final url = "$BASE_URL$BEERS_GET$PAGE=$nextPage&$LIMIT=$DEFAULT_LIMIT";
-      final response = await client.get(url);
+      final response = await _client.get(url);
       final beers = List<BeerModel>.of(
         response.data.map<BeerModel>((json) => BeerModel(
               id: json['id'],
