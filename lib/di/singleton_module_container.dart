@@ -4,6 +4,7 @@ import 'package:flutter_beers/data/provider/api/beers_api_provider.dart';
 import 'package:flutter_beers/data/provider/api/ibeers_api_provider.dart';
 import 'package:flutter_beers/data/provider/db/beers_db_provider.dart';
 import 'package:flutter_beers/data/provider/db/ibeers_db_provider.dart';
+import 'package:flutter_beers/navigation/app_router.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
 
 class SingletonModuleContainer {
@@ -12,6 +13,7 @@ class SingletonModuleContainer {
   static Injector get() {
     if (_instance == null) {
       _instance = Injector()
+        ..map((injector) => AppRouter(), isSingleton: true)
         ..map((injector) => Dio(), isSingleton: true)
         ..map<IBeersApiDataProvider>((injector) => BeersApiDataProvider(client: injector.get<Dio>()), isSingleton: true)
         ..map((injector) => BeersDatabase(), isSingleton: true)

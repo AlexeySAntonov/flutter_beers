@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_beers/business/cubit_favorites.dart';
-import 'package:flutter_beers/data/repository/favorites/favorites_repository.dart';
-import 'package:flutter_beers/data/db/database.dart';
-import 'package:flutter_beers/data/provider/db/beers_db_provider.dart';
-import 'package:flutter_beers/di/favorite_beers_module_container.dart';
 import 'package:flutter_beers/di/singleton_module_container.dart';
+import 'package:flutter_beers/navigation/app_router.dart';
 import 'package:flutter_beers/ui/base/divider/divider_widget.dart';
 import 'package:flutter_beers/ui/base/list_item.dart';
 import 'package:flutter_beers/ui/base/pagination_loading/pagination_loading_item.dart';
@@ -12,7 +8,6 @@ import 'package:flutter_beers/ui/base/pagination_loading/pagination_loading_widg
 import 'package:flutter_beers/ui/base/stub/text_stub_widget.dart';
 import 'package:flutter_beers/ui/beer_list/beer_item.dart';
 import 'package:flutter_beers/ui/beer_list/beer_widget.dart';
-import 'package:flutter_beers/ui/favorites/favorite_beers_widget.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:flutter_beers/business/cubit_beers.dart';
 import 'package:flutter_beers/business/list_state.dart';
@@ -75,8 +70,6 @@ class _BeerListWidgetState extends State<BeerListWidget> {
   }
 
   void _pushFavorites() {
-    Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) {
-      return FavoriteBeersModuleContainer.getScreenComposition(SingletonModuleContainer.get());
-    }));
+    Navigator.of(context).push(SingletonModuleContainer.get().get<AppRouter>().favoriteBeersRoute());
   }
 }
