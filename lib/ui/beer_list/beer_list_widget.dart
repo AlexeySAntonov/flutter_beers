@@ -3,6 +3,8 @@ import 'package:flutter_beers/business/cubit_favorites.dart';
 import 'package:flutter_beers/data/repository/favorites/favorites_repository.dart';
 import 'package:flutter_beers/data/db/database.dart';
 import 'package:flutter_beers/data/provider/db/beers_db_provider.dart';
+import 'package:flutter_beers/di/favorite_beers_module_container.dart';
+import 'package:flutter_beers/di/singleton_module_container.dart';
 import 'package:flutter_beers/ui/base/divider/divider_widget.dart';
 import 'package:flutter_beers/ui/base/list_item.dart';
 import 'package:flutter_beers/ui/base/pagination_loading/pagination_loading_item.dart';
@@ -15,12 +17,12 @@ import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:flutter_beers/business/cubit_beers.dart';
 import 'package:flutter_beers/business/list_state.dart';
 
-class HomeWidget extends StatefulWidget {
+class BeerListWidget extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _HomeWidgetState();
+  State<StatefulWidget> createState() => _BeerListWidgetState();
 }
 
-class _HomeWidgetState extends State<HomeWidget> {
+class _BeerListWidgetState extends State<BeerListWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,16 +76,7 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   void _pushFavorites() {
     Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) {
-      return CubitProvider<FavoritesCubit>(
-        create: (context) => FavoritesCubit(
-          repository: FavoritesRepository(
-            dbProvider: BeersDbDataProvider(
-              db: BeersDatabase(),
-            ),
-          ),
-        ),
-        child: FavoriteBeersWidget(),
-      );
+      return FavoriteBeersModuleContainer.getScreenComposition(SingletonModuleContainer.get());
     }));
   }
 }
